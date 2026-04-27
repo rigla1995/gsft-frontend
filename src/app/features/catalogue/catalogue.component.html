@@ -1,0 +1,206 @@
+<div class="page-container">
+  <h1 class="page-title">Catalogue</h1>
+
+  <mat-tab-group>
+    <!-- INGRÉDIENTS -->
+    <mat-tab label="Ingrédients">
+      <div class="tab-content">
+        <div class="filter-bar">
+          <mat-form-field appearance="outline">
+            <mat-label>Rechercher</mat-label>
+            <input matInput [value]="ingSearch()" (input)="onIngSearch($event)" placeholder="Nom..." />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Catégorie</mat-label>
+            <mat-select [value]="ingCategorieFilter()" (selectionChange)="onIngCategorieFilter($event.value)">
+              <mat-option value="">Toutes</mat-option>
+              @for (c of categories(); track c.id) {
+                <mat-option [value]="c.id">{{ c.nom }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Domaine</mat-label>
+            <mat-select [value]="ingDomaineFilter()" (selectionChange)="onIngDomaineFilter($event.value)">
+              <mat-option value="">Tous</mat-option>
+              @for (d of domaines(); track d.id) {
+                <mat-option [value]="d.id">{{ d.nom }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <button mat-stroked-button (click)="resetIngFilters()">
+            <mat-icon>clear</mat-icon> Effacer
+          </button>
+          <button mat-flat-button color="primary" (click)="openIngredientForm()">
+            <mat-icon>add</mat-icon> Ajouter un ingrédient
+          </button>
+        </div>
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="ingredients()">
+            <ng-container matColumnDef="nom">
+              <th mat-header-cell *matHeaderCellDef>Nom</th>
+              <td mat-cell *matCellDef="let row">{{ row.nom }}</td>
+            </ng-container>
+            <ng-container matColumnDef="categorie">
+              <th mat-header-cell *matHeaderCellDef>Catégorie</th>
+              <td mat-cell *matCellDef="let row">{{ row.categorie?.nom ?? '—' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="unite">
+              <th mat-header-cell *matHeaderCellDef>Unité</th>
+              <td mat-cell *matCellDef="let row">{{ row.unite?.symbole ?? '—' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="prix">
+              <th mat-header-cell *matHeaderCellDef>Prix unitaire</th>
+              <td mat-cell *matCellDef="let row">{{ row.prixUnitaire | currencyTnd }}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button matTooltip="Modifier" (click)="openIngredientForm(row)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="warn" matTooltip="Supprimer" (click)="deleteIngredient(row)"><mat-icon>delete</mat-icon></button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="ingColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: ingColumns;"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell no-data" [attr.colspan]="ingColumns.length">Aucun ingrédient trouvé</td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator [length]="ingTotal()" [pageSize]="ingPageSize" [pageSizeOptions]="[10,25,50]" (page)="onIngPage($event)" />
+      </div>
+    </mat-tab>
+
+    <!-- CATÉGORIES -->
+    <mat-tab label="Catégories">
+      <div class="tab-content">
+        <div class="inline-form" [formGroup]="categorieForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Domaine</mat-label>
+            <mat-select formControlName="domaineId">
+              <mat-option value="">Aucun</mat-option>
+              @for (d of domaines(); track d.id) {
+                <mat-option [value]="d.id">{{ d.nom }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <button mat-flat-button color="primary" (click)="saveCategorie()" [disabled]="categorieForm.invalid">
+            {{ editingCategorie() ? 'Modifier' : 'Ajouter' }}
+          </button>
+          @if (editingCategorie()) {
+            <button mat-stroked-button (click)="cancelEditCategorie()">Annuler</button>
+          }
+        </div>
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="categories()">
+            <ng-container matColumnDef="nom"><th mat-header-cell *matHeaderCellDef>Nom</th><td mat-cell *matCellDef="let row">{{ row.nom }}</td></ng-container>
+            <ng-container matColumnDef="domaine"><th mat-header-cell *matHeaderCellDef>Domaine</th><td mat-cell *matCellDef="let row">{{ row.domaine ?? '—' }}</td></ng-container>
+            <ng-container matColumnDef="actions"><th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="editCategorie(row)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="warn" (click)="deleteCategorie(row)"><mat-icon>delete</mat-icon></button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['nom','domaine','actions']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['nom','domaine','actions'];"></tr>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- UNITÉS -->
+    <mat-tab label="Unités">
+      <div class="tab-content">
+        <div class="inline-form" [formGroup]="uniteForm">
+          <mat-form-field appearance="outline"><mat-label>Nom</mat-label><input matInput formControlName="nom" /></mat-form-field>
+          <mat-form-field appearance="outline"><mat-label>Symbole</mat-label><input matInput formControlName="symbole" /></mat-form-field>
+          <button mat-flat-button color="primary" (click)="saveUnite()" [disabled]="uniteForm.invalid">{{ editingUnite() ? 'Modifier' : 'Ajouter' }}</button>
+          @if (editingUnite()) { <button mat-stroked-button (click)="cancelEditUnite()">Annuler</button> }
+        </div>
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="unites()">
+            <ng-container matColumnDef="nom"><th mat-header-cell *matHeaderCellDef>Nom</th><td mat-cell *matCellDef="let row">{{ row.nom }}</td></ng-container>
+            <ng-container matColumnDef="symbole"><th mat-header-cell *matHeaderCellDef>Symbole</th><td mat-cell *matCellDef="let row">{{ row.symbole }}</td></ng-container>
+            <ng-container matColumnDef="actions"><th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="editUnite(row)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="warn" (click)="deleteUnite(row)"><mat-icon>delete</mat-icon></button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['nom','symbole','actions']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['nom','symbole','actions'];"></tr>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- DOMAINES -->
+    <mat-tab label="Domaines">
+      <div class="tab-content">
+        <div class="inline-form" [formGroup]="domaineForm">
+          <mat-form-field appearance="outline"><mat-label>Nom</mat-label><input matInput formControlName="nom" /></mat-form-field>
+          <button mat-flat-button color="primary" (click)="saveDomaine()" [disabled]="domaineForm.invalid">{{ editingDomaine() ? 'Modifier' : 'Ajouter' }}</button>
+          @if (editingDomaine()) { <button mat-stroked-button (click)="cancelEditDomaine()">Annuler</button> }
+        </div>
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="domaines()">
+            <ng-container matColumnDef="nom"><th mat-header-cell *matHeaderCellDef>Nom</th><td mat-cell *matCellDef="let row">{{ row.nom }}</td></ng-container>
+            <ng-container matColumnDef="actions"><th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="editDomaine(row)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="warn" (click)="deleteDomaine(row)"><mat-icon>delete</mat-icon></button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['nom','actions']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['nom','actions'];"></tr>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- Ingredient Form Overlay -->
+  @if (showIngredientForm()) {
+    <div class="modal-overlay" (click)="closeIngredientForm()">
+      <mat-card class="modal-card" (click)="$event.stopPropagation()">
+        <mat-card-header>
+          <mat-card-title>{{ editingIngredient() ? 'Modifier' : 'Ajouter' }} un ingrédient</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="ingredientForm">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nom</mat-label>
+              <input matInput formControlName="nom" />
+              <mat-error *ngIf="ingredientForm.get('nom')?.hasError('required')">Obligatoire</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Catégorie</mat-label>
+              <mat-select formControlName="categorieId">
+                @for (c of categories(); track c.id) { <mat-option [value]="c.id">{{ c.nom }}</mat-option> }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Unité</mat-label>
+              <mat-select formControlName="uniteId">
+                @for (u of unites(); track u.id) { <mat-option [value]="u.id">{{ u.nom }} ({{ u.symbole }})</mat-option> }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Prix unitaire (DT)</mat-label>
+              <input matInput type="number" formControlName="prixUnitaire" step="0.001" min="0" />
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-stroked-button (click)="closeIngredientForm()">Annuler</button>
+          <button mat-flat-button color="primary" (click)="saveIngredient()" [disabled]="ingredientForm.invalid">Enregistrer</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  }
+</div>

@@ -1,22 +1,15 @@
 @use '@angular/material' as mat;
 
-@include mat.core();
-
-$gsft-primary: mat.define-palette(mat.$blue-palette, 800, 300, 900);
-$gsft-accent:  mat.define-palette(mat.$orange-palette, 700);
-$gsft-warn:    mat.define-palette(mat.$red-palette);
-
-$gsft-theme: mat.define-light-theme((
-  color: (
-    primary: $gsft-primary,
-    accent:  $gsft-accent,
-    warn:    $gsft-warn,
-  ),
-  typography: mat.define-typography-config(),
-  density: 0,
-));
-
-@include mat.all-component-themes($gsft-theme);
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$blue-palette,
+      tertiary: mat.$orange-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -36,4 +29,46 @@ html, body {
 .mat-mdc-card {
   border-radius: 8px !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 24px;
+  color: #1565C0;
+}
+
+.page-container {
+  padding: 24px;
+  max-width: 1280px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  mat-form-field { min-width: 180px; }
+}
+
+.table-wrapper {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.full-width { width: 100%; }
+
+.qty-red    { color: #c62828; font-weight: 600; }
+.qty-amber  { color: #e65100; font-weight: 600; }
+.qty-green  { color: #2e7d32; font-weight: 600; }
+
+@media (max-width: 1024px) {
+  .page-container { padding: 16px; }
+}
+@media (max-width: 768px) {
+  .filter-bar { flex-direction: column; align-items: stretch; }
+  .filter-bar mat-form-field { min-width: unset; }
 }
