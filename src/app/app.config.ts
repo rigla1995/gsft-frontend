@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor])),
     provideAnimationsAsync(),
     { provide: LOCALE_ID, useValue: 'fr-FR' },
-    provideTranslateService({ defaultLanguage: 'fr' }),
+    provideTranslateService({ fallbackLang: 'fr', defaultLanguage: 'fr' }),
     provideTranslateHttpLoader({ prefix: '/i18n/', suffix: '.json' }),
   ],
 };
