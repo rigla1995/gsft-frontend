@@ -1,0 +1,154 @@
+<div class="page-container">
+  <h1 class="page-title">Transferts Labo → Activité</h1>
+
+  @if (loading()) {
+    <div class="spinner-center">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  @if (!loading() && !labo()) {
+    <mat-card>
+      <mat-card-content class="empty-state">
+        <mat-icon>science</mat-icon>
+        <p>Aucun laboratoire configuré. Impossible d'effectuer des transferts.</p>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  @if (labo()) {
+    <div class="transfer-layout">
+
+      <!-- LEFT: Sélection ingrédient depuis le stock labo -->
+      <mat-card class="stock-panel">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>science</mat-icon> Stock {{ labo()!.nom }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- Filtres -->
+          <div class="filters">
+            <mat-form-field appearance="outline" class="filter-field">
+              <mat-label>Catégorie</mat-label>
+              <mat-select [value]="categoryFilter()" (selectionChange)="categoryFilter.set($event.value)">
+                <mat-option value="">Toutes</mat-option>
+                @for (cat of categories(); track cat.id) {
+                  <mat-option [value]="cat.id">{{ cat.name }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="filter-field">
+              <mat-label>Rechercher</mat-label>
+              <input matInput [value]="nameFilter()" (input)="nameFilter.set($any($event.target).value)" placeholder="Nom ingrédient">
+              @if (nameFilter()) {
+                <button matSuffix mat-icon-button (click)="nameFilter.set('')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
+            </mat-form-field>
+
+            <button mat-stroked-button (click)="clearFilters()" matTooltip="Réinitialiser les filtres">
+              <mat-icon>filter_alt_off</mat-icon>
+            </button>
+          </div>
+
+          <!-- Table stock labo -->
+          <div class="stock-list">
+            @for (item of filteredStock(); track item.id) {
+              <div class="stock-row"
+                   [class.selected]="selectedStockItem()?.id === item.id"
+                   (click)="selectIngredient(item)">
+                <div class="ing-info">
+                  <span class="ing-name">{{ item.ingredient?.name }}</span>
+                  <span class="ing-cat">{{ item.ingredient?.categorie?.name }}</span>
+                </div>
+                <span class="qty-badge" [class]="stockColor(item)">
+                  {{ item.quantite }} {{ item.ingredient?.unite?.symbol }}
+                </span>
+              </div>
+            }
+            @if (filteredStock().length === 0) {
+              <p class="no-data">Aucun ingrédient disponible</p>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- RIGHT: Formulaire de transfert -->
+      <mat-card class="form-panel">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>swap_horiz</mat-icon> Nouveau transfert
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (selectedStockItem()) {
+            <div class="selected-info">
+              <mat-icon>inventory_2</mat-icon>
+              <span><strong>{{ selectedStockItem()!.ingredient?.name }}</strong> — disponible : <span [class]="stockColor(selectedStockItem()!)">{{ selectedStockItem()!.quantite }} {{ selectedStockItem()!.ingredient?.unite?.symbol }}</span></span>
+            </div>
+          }
+
+          <form [formGroup]="form" (ngSubmit)="submit()" class="transfer-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Ingrédient</mat-label>
+              <mat-select formControlName="ingredientId">
+                @for (item of laboStock(); track item.id) {
+                  <mat-option [value]="item.ingredientId">
+                    {{ item.ingredient?.name }} ({{ item.quantite }} {{ item.ingredient?.unite?.symbol }})
+                  </mat-option>
+                }
+              </mat-select>
+              @if (form.controls.ingredientId.hasError('required')) {
+                <mat-error>Sélectionnez un ingrédient</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Activité de destination</mat-label>
+              <mat-select formControlName="activiteDestId">
+                @for (a of activitesDest(); track a.id) {
+                  <mat-option [value]="a.id">{{ a.nom }}</mat-option>
+                }
+              </mat-select>
+              @if (form.controls.activiteDestId.hasError('required')) {
+                <mat-error>Sélectionnez une activité</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Quantité</mat-label>
+              <input matInput type="number" formControlName="quantite" min="0.001" step="0.001">
+              <span matSuffix>{{ selectedStockItem()?.ingredient?.unite?.symbol }}</span>
+              @if (form.controls.quantite.hasError('required')) {
+                <mat-error>Quantité requise</mat-error>
+              }
+              @if (form.controls.quantite.hasError('min')) {
+                <mat-error>La quantité doit être > 0</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Note (optionnel)</mat-label>
+              <textarea matInput formControlName="note" rows="2" placeholder="Remarque sur ce transfert"></textarea>
+            </mat-form-field>
+
+            <div class="form-actions">
+              <button mat-raised-button color="primary" type="submit"
+                      [disabled]="form.invalid || submitting()">
+                @if (submitting()) {
+                  <mat-spinner diameter="20" class="btn-spinner"></mat-spinner>
+                } @else {
+                  <mat-icon>send</mat-icon>
+                }
+                Effectuer le transfert
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>

@@ -1,0 +1,138 @@
+.page-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #1565C0;
+}
+
+.spinner-center {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.transfer-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stock-panel mat-card-title,
+.form-panel mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+
+  .filter-field { flex: 1 1 140px; }
+}
+
+.stock-list {
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+}
+
+.stock-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.15s;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: #f5f9ff; }
+  &.selected { background: #E3F2FD; border-left: 3px solid #1565C0; }
+}
+
+.ing-info {
+  display: flex;
+  flex-direction: column;
+  .ing-name { font-weight: 500; }
+  .ing-cat { font-size: 0.78rem; color: #888; }
+}
+
+.qty-badge {
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.qty-red { color: #B71C1C; background: #FFEBEE; }
+.qty-amber { color: #E65100; background: #FFF3E0; }
+.qty-green { color: #1B5E20; background: #E8F5E9; }
+
+.no-data {
+  text-align: center;
+  color: #999;
+  padding: 24px;
+}
+
+.selected-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #E3F2FD;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+
+  mat-icon { color: #1565C0; }
+}
+
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.full-width { width: 100%; }
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.btn-spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  color: #999;
+
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+  }
+}

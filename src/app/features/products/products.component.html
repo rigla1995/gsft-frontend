@@ -1,0 +1,165 @@
+<div class="page-container">
+  <h1 class="page-title">Produits & Recettes</h1>
+
+  <!-- Activity selector -->
+  <div class="activite-selector">
+    @for (a of activites(); track a.id) {
+      <button mat-stroked-button [class.active]="selectedActiviteId() === a.id" (click)="selectedActiviteId.set(a.id); loadProducts()">
+        {{ a.nom }}
+      </button>
+    }
+  </div>
+
+  <!-- Product list -->
+  @if (!editingRecette()) {
+    <div class="actions-bar">
+      <button mat-flat-button color="primary" (click)="openProductForm()">
+        <mat-icon>add</mat-icon> Nouveau produit
+      </button>
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="products()">
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef>Nom</th>
+          <td mat-cell *matCellDef="let row">{{ row.nom }}</td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="type-chip" [class.sellable]="row.type === 'SELLABLE'">{{ row.type === 'SELLABLE' ? 'Vendu' : 'Composant' }}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="prixVente">
+          <th mat-header-cell *matHeaderCellDef>Prix vente</th>
+          <td mat-cell *matCellDef="let row">{{ row.prixVente | currencyTnd }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cout">
+          <th mat-header-cell *matHeaderCellDef>Coût recette</th>
+          <td mat-cell *matCellDef="let row">{{ row.cout | currencyTnd }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button matTooltip="Modifier" (click)="openProductForm(row)"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button matTooltip="Éditeur recette" (click)="openRecetteEditor(row)"><mat-icon>menu_book</mat-icon></button>
+            <button mat-icon-button color="warn" matTooltip="Supprimer" (click)="deleteProduct(row)"><mat-icon>delete</mat-icon></button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="productColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: productColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" colspan="5">Aucun produit</td>
+        </tr>
+      </table>
+    </div>
+  }
+
+  <!-- Recette editor -->
+  @if (editingRecette()) {
+    <mat-card class="recette-card">
+      <mat-card-header>
+        <mat-card-title>Recette : {{ editingRecette()!.nom }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Add ligne form -->
+        <div class="recette-add-form" [formGroup]="recetteLigneForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="ligneType">
+              <mat-option value="INGREDIENT">Ingrédient</mat-option>
+              <mat-option value="PRODUIT">Sous-produit</mat-option>
+            </mat-select>
+          </mat-form-field>
+          @if (recetteLigneForm.get('ligneType')?.value === 'INGREDIENT') {
+            <mat-form-field appearance="outline">
+              <mat-label>Ingrédient</mat-label>
+              <mat-select formControlName="ingredientId">
+                @for (i of ingredients(); track i.id) { <mat-option [value]="i.id">{{ i.name }}</mat-option> }
+              </mat-select>
+            </mat-form-field>
+          } @else {
+            <mat-form-field appearance="outline">
+              <mat-label>Sous-produit</mat-label>
+              <mat-select formControlName="sousProduitId">
+                @for (p of allProducts(); track p.id) {
+                  @if (p.id !== editingRecette()!.id) {
+                    <mat-option [value]="p.id">{{ p.nom }}</mat-option>
+                  }
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+          <mat-form-field appearance="outline">
+            <mat-label>Quantité</mat-label>
+            <input matInput type="number" formControlName="quantite" step="0.001" min="0" />
+          </mat-form-field>
+          <button mat-flat-button color="accent" (click)="addRecetteLigne()">
+            <mat-icon>add</mat-icon> Ajouter
+          </button>
+        </div>
+
+        <!-- Lignes table -->
+        <table mat-table [dataSource]="recetteLignes()">
+          <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef>Élément</th>
+            <td mat-cell *matCellDef="let row">{{ getLigneName(row) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="quantite">
+            <th mat-header-cell *matHeaderCellDef>Quantité</th>
+            <td mat-cell *matCellDef="let row">{{ row.quantite }}</td>
+          </ng-container>
+          <ng-container matColumnDef="cout">
+            <th mat-header-cell *matHeaderCellDef>Coût</th>
+            <td mat-cell *matCellDef="let row">{{ row.coutLigne | currencyTnd }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row; let i = index">
+              <button mat-icon-button color="warn" (click)="removeLigne(i)"><mat-icon>remove_circle</mat-icon></button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="recetteColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: recetteColumns;"></tr>
+        </table>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button (click)="editingRecette.set(null)">Annuler</button>
+        <button mat-flat-button color="primary" (click)="saveRecette()">Enregistrer la recette</button>
+      </mat-card-actions>
+    </mat-card>
+  }
+
+  <!-- Product form overlay -->
+  @if (showProductForm()) {
+    <div class="modal-overlay" (click)="showProductForm.set(false)">
+      <mat-card class="modal-card" (click)="$event.stopPropagation()">
+        <mat-card-header>
+          <mat-card-title>{{ editingProduct() ? 'Modifier' : 'Nouveau' }} produit</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="productForm">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nom</mat-label>
+              <input matInput formControlName="nom" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Type</mat-label>
+              <mat-select formControlName="type">
+                @for (t of productTypes; track t.value) { <mat-option [value]="t.value">{{ t.label }}</mat-option> }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Prix de vente (DT)</mat-label>
+              <input matInput type="number" formControlName="prixVente" step="0.001" min="0" />
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-stroked-button (click)="showProductForm.set(false)">Annuler</button>
+          <button mat-flat-button color="primary" (click)="saveProduct()" [disabled]="productForm.invalid">Enregistrer</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  }
+</div>

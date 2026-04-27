@@ -1,0 +1,111 @@
+<div class="page-container">
+  <h1 class="page-title">Inventaire périodique</h1>
+
+  <!-- Sélecteur activité -->
+  <div class="activite-selector">
+    @for (a of activites(); track a.id) {
+      <button mat-stroked-button [class.active]="selectedActiviteId() === a.id" (click)="selectActivite(a.id)">
+        {{ a.nom }}
+      </button>
+    }
+  </div>
+
+  @if (!activeSession()) {
+    <!-- LISTE SESSIONS -->
+    <div class="sessions-header">
+      <button mat-flat-button color="primary" (click)="creerSession()" [disabled]="loading()">
+        <mat-icon>add</mat-icon> Nouvelle session d'inventaire
+      </button>
+    </div>
+
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="sessions()">
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date création</th>
+          <td mat-cell *matCellDef="let row">{{ row.createdAt | dateFr:'datetime' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="statut-chip statut-{{ row.statut.toLowerCase() }}">{{ row.statut }}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="lignes">
+          <th mat-header-cell *matHeaderCellDef>Lignes</th>
+          <td mat-cell *matCellDef="let row">{{ row.lignes?.length ?? 0 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button matTooltip="Ouvrir" (click)="ouvrirSession(row)">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="sessionsColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: sessionsColumns;" class="clickable-row" (click)="ouvrirSession(row)"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" colspan="4">Aucune session d'inventaire</td>
+        </tr>
+      </table>
+    </div>
+  } @else {
+    <!-- VUE SESSION ACTIVE -->
+    <div class="session-header">
+      <button mat-stroked-button (click)="retourListe()">
+        <mat-icon>arrow_back</mat-icon> Retour
+      </button>
+      <h2>Session du {{ activeSession()!.createdAt | dateFr:'datetime' }}</h2>
+      <span class="statut-chip statut-{{ activeSession()!.statut.toLowerCase() }}">{{ activeSession()!.statut }}</span>
+      @if (activeSession()!.statut !== 'VALIDE') {
+        <button mat-flat-button color="primary" (click)="validerSession()">
+          <mat-icon>check_circle</mat-icon> Valider l'inventaire
+        </button>
+      }
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="activeSession()!.lignes ?? []">
+        <ng-container matColumnDef="ingredient">
+          <th mat-header-cell *matHeaderCellDef>Ingrédient</th>
+          <td mat-cell *matCellDef="let row">{{ row.ingredient?.name ?? row.ingredientId }}</td>
+        </ng-container>
+        <ng-container matColumnDef="theoriqueQty">
+          <th mat-header-cell *matHeaderCellDef>Stock théorique</th>
+          <td mat-cell *matCellDef="let row">{{ row.quantiteTheorique }}</td>
+        </ng-container>
+        <ng-container matColumnDef="realleQty">
+          <th mat-header-cell *matHeaderCellDef>Stock réel</th>
+          <td mat-cell *matCellDef="let row">
+            @if (activeSession()!.statut !== 'VALIDE') {
+              <input class="qty-input" type="number" step="0.001" min="0"
+                [value]="row.quantiteReelle ?? ''"
+                (change)="updateLigne(row, $event)" />
+            } @else {
+              {{ row.quantiteReelle }}
+            }
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="delta">
+          <th mat-header-cell *matHeaderCellDef>Écart</th>
+          <td mat-cell *matCellDef="let row" [class]="deltaClass(row)">
+            {{ delta(row) > 0 ? '+' : '' }}{{ delta(row) | number:'1.3-3' }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row"></td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="lignesColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: lignesColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" colspan="5">Aucune ligne d'inventaire</td>
+        </tr>
+      </table>
+    </div>
+  }
+</div>

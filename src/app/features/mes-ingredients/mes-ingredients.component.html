@@ -1,0 +1,40 @@
+<div class="page-container">
+  <h1 class="page-title">Mes Ingrédients</h1>
+  <p class="subtitle">Sélectionnez les ingrédients du catalogue global à assigner à l'activité.</p>
+
+  <div class="selector-bar">
+    <mat-form-field appearance="outline">
+      <mat-label>Activité</mat-label>
+      <mat-select [value]="selectedActiviteId()" (selectionChange)="onActiviteChange($event.value)">
+        @for (a of activites(); track a.id) {
+          <mat-option [value]="a.id">{{ a.nom }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Rechercher un ingrédient</mat-label>
+      <input matInput [ngModel]="searchText()" (ngModelChange)="onSearch($event)" placeholder="Nom..." />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="ingredients-grid">
+    @for (ing of filteredIngredients(); track ing.id) {
+      <mat-card class="ingredient-card" [class.assigned]="isAssigned(ing.id)" (click)="toggle(ing.id)">
+        <mat-card-content>
+          <mat-checkbox [checked]="isAssigned(ing.id)" (click)="$event.stopPropagation()" (change)="toggle(ing.id)">
+            {{ ing.name }}
+          </mat-checkbox>
+          <div class="ing-meta">{{ ing.categorie?.name }} · {{ ing.unite?.symbol }}</div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <div class="save-bar">
+    <button mat-flat-button color="primary" (click)="save()">
+      <mat-icon>save</mat-icon>
+      Enregistrer l'assignation ({{ assignedIds().size }} ingrédient(s))
+    </button>
+  </div>
+</div>

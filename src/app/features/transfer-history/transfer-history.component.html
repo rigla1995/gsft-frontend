@@ -1,0 +1,128 @@
+<div class="page-container">
+  <h1 class="page-title">Historique des Transferts</h1>
+
+  <!-- Summary cards -->
+  @if (unitTotals().length > 0) {
+    <div class="summary-cards">
+      @for (t of unitTotals(); track t.unite) {
+        <mat-card class="summary-card">
+          <mat-card-content>
+            <div class="summary-value">{{ t.total | number:'1.0-3' }}</div>
+            <div class="summary-label">{{ t.unite }}</div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+
+  <!-- Filtres -->
+  <mat-card class="filter-card">
+    <mat-card-content>
+      <div class="filters">
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Activité</mat-label>
+          <mat-select [value]="filterActiviteId()" (selectionChange)="filterActiviteId.set($event.value); applyFilters()">
+            <mat-option value="">Toutes</mat-option>
+            @for (a of activites(); track a.id) {
+              <mat-option [value]="a.id">{{ a.nom }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Ingrédient</mat-label>
+          <input matInput [value]="filterIngredient()" (input)="filterIngredient.set($any($event.target).value)" placeholder="Filtrer par ingrédient">
+          @if (filterIngredient()) {
+            <button matSuffix mat-icon-button (click)="filterIngredient.set('')">
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+        </mat-form-field>
+
+        <button mat-stroked-button (click)="clearFilters()" matTooltip="Effacer les filtres">
+          <mat-icon>filter_alt_off</mat-icon> Réinitialiser
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Table -->
+  <mat-card>
+    <mat-card-content>
+      @if (loading()) {
+        <div class="spinner-center">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      } @else {
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="filteredRows()">
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let t">{{ t.createdAt | dateFr }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="ingredient">
+              <th mat-header-cell *matHeaderCellDef>Ingrédient</th>
+              <td mat-cell *matCellDef="let t">
+                <div class="ing-cell">
+                  <span class="ing-name">{{ t.ingredient?.name ?? '—' }}</span>
+                  <span class="ing-cat">{{ t.ingredient?.categorie?.name }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="source">
+              <th mat-header-cell *matHeaderCellDef>Source</th>
+              <td mat-cell *matCellDef="let t">
+                <span class="badge badge-labo">{{ t.activiteSource?.name ?? 'Labo' }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dest">
+              <th mat-header-cell *matHeaderCellDef>Destination</th>
+              <td mat-cell *matCellDef="let t">
+                <span class="badge badge-dest">{{ t.activiteDest?.name ?? '—' }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="quantite">
+              <th mat-header-cell *matHeaderCellDef>Quantité</th>
+              <td mat-cell *matCellDef="let t" class="qty-cell">
+                {{ t.quantite }} {{ t.ingredient?.unite?.symbol }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="note">
+              <th mat-header-cell *matHeaderCellDef>Note</th>
+              <td mat-cell *matCellDef="let t">
+                @if (t.note) {
+                  <button mat-icon-button color="primary" matTooltip="Voir la note" (click)="openNote(t.note)">
+                    <mat-icon>notes</mat-icon>
+                  </button>
+                } @else {
+                  <span class="no-note">—</span>
+                }
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell no-data" colspan="6">Aucun transfert trouvé</td>
+            </tr>
+          </table>
+        </div>
+
+        <mat-paginator
+          [length]="total()"
+          [pageSize]="pageSize"
+          [pageIndex]="page()"
+          [pageSizeOptions]="[10]"
+          (page)="onPage($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>
