@@ -1,0 +1,6 @@
+.subtitle { color: #666; margin-bottom: 16px; }
+.selector-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.ingredients-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.ingredient-card { cursor: pointer; transition: box-shadow 0.2s; &:hover { box-shadow: 0 2px 8px rgba(21,101,192,0.2); } &.assigned { border: 2px solid #1565C0; } }
+.ing-meta { font-size: 0.8rem; color: #888; margin-top: 4px; padding-left: 36px; }
+.save-bar { display: flex; justify-content: flex-end; }
