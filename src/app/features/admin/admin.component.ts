@@ -14,7 +14,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AdminService, TenantSummary, ClientAccount, GlobalActivity, CreateClientAccountRequest, TenantType } from '../../core/services/admin.service';
+import { AdminService, TenantSummary, ClientAccount, GlobalActivity, GlobalStockSummary, CreateClientAccountRequest, TenantType } from '../../core/services/admin.service';
 
 @Component({
   selector: 'app-admin',
@@ -36,12 +36,14 @@ export class AdminComponent implements OnInit {
   tenants = signal<TenantSummary[]>([]);
   tenantUsers = signal<ClientAccount[]>([]);
   allActivities = signal<GlobalActivity[]>([]);
+  globalStock = signal<GlobalStockSummary[]>([]);
   loading = signal(false);
   showCreateForm = signal(false);
 
   tenantColumns = ['name', 'type', 'userCount', 'activityCount', 'actions'];
   userColumns = ['name', 'email', 'status', 'createdAt', 'actions'];
   activityColumns = ['name', 'type', 'tenantName', 'createdAt'];
+  stockColumns = ['tenantName', 'activityName', 'activityType', 'ingredientCount', 'totalValue'];
 
   tenantTypes: { value: TenantType; label: string }[] = [
     { value: 'Enterprise', label: 'Entreprise' },
@@ -69,6 +71,10 @@ export class AdminComponent implements OnInit {
     });
     this.svc.getAllActivities().subscribe({
       next: a => this.allActivities.set(a),
+      error: () => {},
+    });
+    this.svc.getGlobalStock().subscribe({
+      next: s => this.globalStock.set(s),
       error: () => {},
     });
   }

@@ -42,6 +42,17 @@ export interface GlobalActivity {
   createdAt: string;
 }
 
+export interface GlobalStockSummary {
+  tenantId: string;
+  tenantName: string;
+  tenantType: string;
+  activityId: string;
+  activityName: string;
+  activityType: string;
+  ingredientCount: number;
+  totalValueTND: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AdminService {
   private http = inject(HttpClient);
@@ -64,5 +75,9 @@ export class AdminService {
 
   getAllActivities(): Observable<GlobalActivity[]> {
     return this.http.get<GlobalActivity[]>('/api/admin/activities');
+  }
+
+  getGlobalStock(): Observable<GlobalStockSummary[]> {
+    return this.http.get<GlobalStockSummary[]>('/api/admin/stock');
   }
 }

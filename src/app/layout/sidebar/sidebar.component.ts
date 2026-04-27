@@ -14,7 +14,7 @@ interface NavItem {
 
 const SUPERADMIN_NAV: NavItem[] = [
   { label: 'Tableau de bord', icon: 'dashboard', route: '/app/dashboard' },
-  { label: 'Administration', icon: 'admin_panel_settings', route: '/app/admin', section: 'Administration' },
+  { label: 'Gestion des comptes', icon: 'admin_panel_settings', route: '/app/admin', section: 'Administration' },
   { label: 'Catalogue', icon: 'menu_book', route: '/app/catalogue', section: 'Paramétrage' },
 ];
 
