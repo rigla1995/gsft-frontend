@@ -83,7 +83,7 @@ export class InventaireComponent implements OnInit {
   updateLigne(ligne: InventaireLigne, event: Event): void {
     const val = parseFloat((event.target as HTMLInputElement).value);
     if (isNaN(val) || val < 0) return;
-    this.stockSvc.updateInventaireLigne(this.activeSession()!.id, ligne.id, val).subscribe({
+    this.stockSvc.updateInventaireLigne(this.selectedActiviteId(), this.activeSession()!.id, ligne.id, val).subscribe({
       next: () => {
         ligne.quantiteReelle = val;
         this.snackBar.open('Quantité mise à jour', 'Fermer', { duration: 1500 });
@@ -95,7 +95,7 @@ export class InventaireComponent implements OnInit {
     const s = this.activeSession();
     if (!s) return;
     if (!confirm('Valider cette session d\'inventaire ? Les écarts seront enregistrés.')) return;
-    this.stockSvc.validerInventaire(s.id).subscribe({
+    this.stockSvc.validerInventaire(this.selectedActiviteId(), s.id).subscribe({
       next: () => {
         this.snackBar.open('Inventaire validé', 'Fermer', { duration: 2000 });
         this.activeSession.set(null);

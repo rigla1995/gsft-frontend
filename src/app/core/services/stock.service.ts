@@ -84,17 +84,22 @@ export class StockService {
   }
 
   updateInventaireLigne(
+    activityId: string,
     sessionId: string,
     ligneId: string,
     quantiteReelle: number,
   ): Observable<void> {
-    return this.http.patch<void>(`/api/inventory/${sessionId}/lignes/${ligneId}`, {
-      quantiteReelle,
-    });
+    return this.http.patch<void>(
+      `/api/activities/${activityId}/inventory-sessions/${sessionId}/lines/${ligneId}`,
+      { quantiteReelle },
+    );
   }
 
-  validerInventaire(sessionId: string): Observable<void> {
-    return this.http.post<void>(`/api/inventory/${sessionId}/valider`, {});
+  validerInventaire(activityId: string, sessionId: string): Observable<void> {
+    return this.http.post<void>(
+      `/api/activities/${activityId}/inventory-sessions/${sessionId}/validate`,
+      {},
+    );
   }
 
   getInventaires(activiteId: string): Observable<InventaireSession[]> {
