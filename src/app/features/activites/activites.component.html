@@ -21,7 +21,7 @@
         <form [formGroup]="form" (ngSubmit)="submit()" class="form-row">
           <mat-form-field appearance="outline">
             <mat-label>Nom</mat-label>
-            <input matInput formControlName="name" placeholder="Ex. Restaurant Centre">
+            <input matInput formControlName="name" placeholder="Ex. Franchise Nord">
             @if (form.controls.name.hasError('required')) {
               <mat-error>Le nom est requis</mat-error>
             }
@@ -49,31 +49,28 @@
 
   <mat-divider class="section-divider"></mat-divider>
 
-  <!-- Restaurants -->
-  @if (restaurants.length > 0) {
+  @if (franchises.length > 0) {
     <mat-card class="group-card">
       <mat-card-header>
-        <mat-card-title><mat-icon class="title-icon primary-icon">store</mat-icon> Restaurants ({{ restaurants.length }})</mat-card-title>
+        <mat-card-title><mat-icon class="title-icon primary-icon">store</mat-icon> Franchises ({{ franchises.length }})</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <ng-container *ngTemplateOutlet="tableRef; context: { $implicit: restaurants }"></ng-container>
+        <ng-container *ngTemplateOutlet="tableRef; context: { $implicit: franchises }"></ng-container>
       </mat-card-content>
     </mat-card>
   }
 
-  <!-- Cafés -->
-  @if (cafes.length > 0) {
+  @if (distinctes.length > 0) {
     <mat-card class="group-card">
       <mat-card-header>
-        <mat-card-title><mat-icon class="title-icon">local_cafe</mat-icon> Cafés ({{ cafes.length }})</mat-card-title>
+        <mat-card-title><mat-icon class="title-icon">restaurant</mat-icon> Activités distinctes ({{ distinctes.length }})</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <ng-container *ngTemplateOutlet="tableRef; context: { $implicit: cafes }"></ng-container>
+        <ng-container *ngTemplateOutlet="tableRef; context: { $implicit: distinctes }"></ng-container>
       </mat-card-content>
     </mat-card>
   }
 
-  <!-- Labos -->
   @if (labos.length > 0) {
     <mat-card class="group-card">
       <mat-card-header>

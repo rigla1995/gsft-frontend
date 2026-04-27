@@ -25,6 +25,7 @@ export const routes: Routes = [
       { path: 'transfer-history', loadComponent: () => import('./features/transfer-history/transfer-history.component').then((m) => m.TransferHistoryComponent) },
       { path: 'products', loadComponent: () => import('./features/products/products.component').then((m) => m.ProductsComponent) },
       { path: 'technical-sheets', loadComponent: () => import('./features/technical-sheets/technical-sheets.component').then((m) => m.TechnicalSheetsComponent) },
+      { path: 'admin', loadComponent: () => import('./features/admin/admin.component').then((m) => m.AdminComponent) },
     ],
   },
   { path: '**', redirectTo: '/login' },

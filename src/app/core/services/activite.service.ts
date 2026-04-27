@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export type ActivityType = 'Restaurant' | 'Cafe' | 'Labo';
+export type ActivityType = 'Franchise' | 'Distincte' | 'Labo';
 
 export interface Activite {
   id: string;

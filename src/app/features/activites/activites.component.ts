@@ -39,19 +39,19 @@ export class ActivitesComponent implements OnInit {
 
   form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
-    type: ['Restaurant' as ActivityType, Validators.required],
+    type: ['Franchise' as ActivityType, Validators.required],
   });
 
   columns = ['name', 'type', 'actions'];
 
   types: { value: ActivityType; label: string }[] = [
-    { value: 'Restaurant', label: 'Restaurant' },
-    { value: 'Cafe', label: 'Café' },
+    { value: 'Franchise', label: 'Franchise' },
+    { value: 'Distincte', label: 'Distincte' },
     { value: 'Labo', label: 'Laboratoire' },
   ];
 
-  get restaurants() { return this.activites().filter(a => a.type === 'Restaurant'); }
-  get cafes() { return this.activites().filter(a => a.type === 'Cafe'); }
+  get franchises() { return this.activites().filter(a => a.type === 'Franchise'); }
+  get distinctes() { return this.activites().filter(a => a.type === 'Distincte'); }
   get labos() { return this.activites().filter(a => a.type === 'Labo'); }
 
   ngOnInit(): void {
@@ -68,7 +68,7 @@ export class ActivitesComponent implements OnInit {
 
   openCreate(): void {
     this.editingId.set(null);
-    this.form.reset({ name: '', type: 'Restaurant' });
+    this.form.reset({ name: '', type: 'Franchise' });
     this.showForm.set(true);
   }
 
@@ -117,6 +117,6 @@ export class ActivitesComponent implements OnInit {
   }
 
   typeColor(type: string): 'primary' | 'accent' | '' {
-    return type === 'Restaurant' ? 'primary' : type === 'Labo' ? 'accent' : '';
+    return type === 'Franchise' ? 'primary' : type === 'Labo' ? 'accent' : '';
   }
 }

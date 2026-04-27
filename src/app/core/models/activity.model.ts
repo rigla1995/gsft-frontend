@@ -6,7 +6,7 @@ export interface Activity {
 }
 
 export enum ActivityType {
-  Restaurant = 'Restaurant',
-  Cafe = 'Cafe',
+  Franchise = 'Franchise',
+  Distincte = 'Distincte',
   Labo = 'Labo',
 }
