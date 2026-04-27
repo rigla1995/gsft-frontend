@@ -1,0 +1,50 @@
+{
+  "APP": {
+    "TITLE": "GSFT - Gestion Stock",
+    "LOADING": "Chargement..."
+  },
+  "AUTH": {
+    "LOGIN": "Connexion",
+    "LOGOUT": "Déconnexion",
+    "EMAIL": "Adresse e-mail",
+    "PASSWORD": "Mot de passe",
+    "SUBMIT": "Se connecter",
+    "CHANGE_PASSWORD": "Changer le mot de passe",
+    "CURRENT_PASSWORD": "Mot de passe actuel",
+    "NEW_PASSWORD": "Nouveau mot de passe",
+    "CONFIRM_PASSWORD": "Confirmer le mot de passe",
+    "ERROR_INVALID": "Email ou mot de passe incorrect",
+    "ERROR_REQUIRED": "Ce champ est obligatoire",
+    "ERROR_EMAIL": "Email invalide"
+  },
+  "NAV": {
+    "DASHBOARD": "Tableau de bord",
+    "CATALOGUE": "Catalogue",
+    "STOCK": "Stock",
+    "PRODUCTS": "Produits",
+    "TECHNICAL_SHEETS": "Fiches Techniques",
+    "ACTIVITES": "Activités",
+    "TRANSFERS": "Transferts",
+    "TRANSFER_HISTORY": "Historique Transferts",
+    "LABO_STOCK": "Stock Labo"
+  },
+  "COMMON": {
+    "SAVE": "Enregistrer",
+    "CANCEL": "Annuler",
+    "CONFIRM": "Confirmer",
+    "DELETE": "Supprimer",
+    "EDIT": "Modifier",
+    "ADD": "Ajouter",
+    "SEARCH": "Rechercher",
+    "CLEAR": "Effacer",
+    "CATEGORY": "Catégorie",
+    "NAME": "Nom",
+    "QUANTITY": "Quantité",
+    "UNIT": "Unité",
+    "ACTIONS": "Actions",
+    "NO_DATA": "Aucune donnée disponible",
+    "LOADING": "Chargement...",
+    "ERROR": "Une erreur est survenue",
+    "SUCCESS": "Opération réussie"
+  }
+}

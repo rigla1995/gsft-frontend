@@ -1,0 +1,50 @@
+{
+  "APP": {
+    "TITLE": "GSFT - Stock Management",
+    "LOADING": "Loading..."
+  },
+  "AUTH": {
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "EMAIL": "Email address",
+    "PASSWORD": "Password",
+    "SUBMIT": "Sign in",
+    "CHANGE_PASSWORD": "Change password",
+    "CURRENT_PASSWORD": "Current password",
+    "NEW_PASSWORD": "New password",
+    "CONFIRM_PASSWORD": "Confirm password",
+    "ERROR_INVALID": "Invalid email or password",
+    "ERROR_REQUIRED": "This field is required",
+    "ERROR_EMAIL": "Invalid email"
+  },
+  "NAV": {
+    "DASHBOARD": "Dashboard",
+    "CATALOGUE": "Catalogue",
+    "STOCK": "Stock",
+    "PRODUCTS": "Products",
+    "TECHNICAL_SHEETS": "Technical Sheets",
+    "ACTIVITES": "Activities",
+    "TRANSFERS": "Transfers",
+    "TRANSFER_HISTORY": "Transfer History",
+    "LABO_STOCK": "Labo Stock"
+  },
+  "COMMON": {
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "CONFIRM": "Confirm",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "ADD": "Add",
+    "SEARCH": "Search",
+    "CLEAR": "Clear",
+    "CATEGORY": "Category",
+    "NAME": "Name",
+    "QUANTITY": "Quantity",
+    "UNIT": "Unit",
+    "ACTIONS": "Actions",
+    "NO_DATA": "No data available",
+    "LOADING": "Loading...",
+    "ERROR": "An error occurred",
+    "SUCCESS": "Operation successful"
+  }
+}
