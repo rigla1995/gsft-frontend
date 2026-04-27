@@ -91,7 +91,7 @@ export class LaboStockComponent implements OnInit {
 
   ngOnInit(): void {
     this.activiteSvc.getActivites().subscribe(list => {
-      const laboActivite = list.find(a => a.type === 'LABO');
+      const laboActivite = list.find(a => a.type === 'Labo');
       if (laboActivite) {
         this.labo.set(laboActivite);
         this.stockSvc.getStock(laboActivite.id).subscribe(s => this.stock.set(s));

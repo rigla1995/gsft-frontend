@@ -73,9 +73,9 @@ export class TransfersComponent implements OnInit {
     this.loading.set(true);
     this.activiteSvc.getActivites().subscribe({
       next: list => {
-        const labo = list.find(a => a.type === 'LABO') ?? null;
+        const labo = list.find(a => a.type === 'Labo') ?? null;
         this.labo.set(labo);
-        this.activitesDest.set(list.filter(a => a.type !== 'LABO'));
+        this.activitesDest.set(list.filter(a => a.type !== 'Labo'));
         if (labo) {
           this.stockSvc.getStock(labo.id).subscribe({
             next: stock => { this.laboStock.set(stock); this.loading.set(false); },
