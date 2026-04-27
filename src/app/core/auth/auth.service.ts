@@ -32,7 +32,7 @@ export class AuthService {
             email: response.user.email,
             firstName: response.user.firstName,
             lastName: response.user.lastName,
-            role: response.user.role as any,
+            role: response.user.role,
             tenantId: response.user.tenantId,
             activityId: response.user.activityId,
             mustChangePassword: response.user.mustChangePassword,

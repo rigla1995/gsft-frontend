@@ -10,8 +10,8 @@ export interface User {
 }
 
 export enum UserRole {
-  SUPER_ADMIN = 'SUPER_ADMIN',
-  FRANCHISE_ADMIN = 'FRANCHISE_ADMIN',
-  ACTIVITY_MANAGER = 'ACTIVITY_MANAGER',
-  STAFF = 'STAFF',
+  SuperAdmin = 'SuperAdmin',
+  TenantAdmin = 'TenantAdmin',
+  ActivityManager = 'ActivityManager',
+  Viewer = 'Viewer',
 }

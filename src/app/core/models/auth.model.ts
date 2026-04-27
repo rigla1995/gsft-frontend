@@ -1,3 +1,5 @@
+import { UserRole } from './user.model';
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -11,7 +13,7 @@ export interface LoginResponse {
     email: string;
     firstName: string;
     lastName: string;
-    role: string;
+    role: UserRole;
     tenantId: string;
     activityId?: string;
     mustChangePassword?: boolean;
