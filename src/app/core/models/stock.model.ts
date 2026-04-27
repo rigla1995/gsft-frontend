@@ -71,3 +71,25 @@ export interface IngredientAssignation {
   activiteId: string;
   ingredientIds: string[];
 }
+
+export interface Transfert {
+  id: string;
+  ingredientId: string;
+  ingredient?: import('./catalogue.model').Ingredient;
+  activiteSourceId: string;
+  activiteSource?: { id: string; nom: string };
+  activiteDestId: string;
+  activiteDest?: { id: string; nom: string };
+  quantite: number;
+  note?: string;
+  createdAt: string;
+}
+
+export interface TransfertFilter {
+  activiteId?: string;
+  ingredientId?: string;
+  dateDebut?: string;
+  dateFin?: string;
+  page?: number;
+  pageSize?: number;
+}

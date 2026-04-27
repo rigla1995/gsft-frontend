@@ -52,14 +52,13 @@ export class AuthService {
     return this.http.post<void>(`${environment.apiUrl}/auth/change-password`, request);
   }
 
-  refreshToken(): Observable<{ accessToken: string }> {
+  refreshToken(): Observable<{ accessToken: string; refreshToken: string }> {
     const refreshToken = this.tokenService.getRefreshToken();
     return this.http
-      .post<{ accessToken: string }>(`${environment.apiUrl}/auth/refresh`, { refreshToken })
+      .post<{ accessToken: string; refreshToken: string }>(`${environment.apiUrl}/auth/refresh`, { refreshToken })
       .pipe(
         tap((response) => {
-          const current = this.tokenService.getRefreshToken() ?? '';
-          this.tokenService.setTokens(response.accessToken, current);
+          this.tokenService.setTokens(response.accessToken, response.refreshToken);
         }),
       );
   }

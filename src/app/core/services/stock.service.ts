@@ -8,6 +8,8 @@ import {
   MouvementFilter,
   MouvementRequest,
   StockItem,
+  Transfert,
+  TransfertFilter,
   TransfertRequest,
 } from '../models/stock.model';
 import { PaginatedResponse } from '../models/catalogue.model';
@@ -55,6 +57,17 @@ export class StockService {
 
   transferer(req: TransfertRequest): Observable<void> {
     return this.http.post<void>('/api/transferts', req);
+  }
+
+  getTransferts(filter?: TransfertFilter): Observable<PaginatedResponse<Transfert>> {
+    let params = new HttpParams();
+    if (filter?.activiteId) params = params.set('activiteId', filter.activiteId);
+    if (filter?.ingredientId) params = params.set('ingredientId', filter.ingredientId);
+    if (filter?.dateDebut) params = params.set('dateDebut', filter.dateDebut);
+    if (filter?.dateFin) params = params.set('dateFin', filter.dateFin);
+    if (filter?.page != null) params = params.set('page', String(filter.page));
+    if (filter?.pageSize != null) params = params.set('pageSize', String(filter.pageSize));
+    return this.http.get<PaginatedResponse<Transfert>>('/api/transferts', { params });
   }
 
   // Inventaire
