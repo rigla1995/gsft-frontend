@@ -1,0 +1,94 @@
+<div class="page-container">
+  <h1 class="page-title">Fiches Techniques</h1>
+
+  <div class="selector-bar">
+    <mat-form-field appearance="outline">
+      <mat-label>Activité</mat-label>
+      <mat-select [value]="selectedActiviteId()" (selectionChange)="selectedActiviteId.set($event.value); loadProducts()">
+        @for (a of activites(); track a.id) {
+          <mat-option [value]="a.id">{{ a.nom }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Produit</mat-label>
+      <mat-select [value]="selectedProductId()" (selectionChange)="selectedProductId.set($event.value)">
+        @for (p of products(); track p.id) {
+          <mat-option [value]="p.id">{{ p.nom }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="loadFiche()" [disabled]="!selectedProductId()">
+      <mat-icon>visibility</mat-icon> Afficher
+    </button>
+  </div>
+
+  @if (fiche()) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ fiche()!.produit.nom }}</mat-card-title>
+        <mat-card-subtitle>
+          Prix de vente : {{ fiche()!.produit.prixVente | currencyTnd }} |
+          Coût total : {{ getTotalCout() | currencyTnd }} |
+          Marge : {{ getMargePercent() | number:'1.1-1' }}%
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="toolbar">
+          <button mat-stroked-button (click)="toggleManuel()">
+            <mat-icon>{{ modeManuel() ? 'lock_open' : 'edit' }}</mat-icon>
+            {{ modeManuel() ? 'Mode auto' : 'Mode manuel (override prix)' }}
+          </button>
+          <button mat-stroked-button (click)="exportExcel()">
+            <mat-icon>download</mat-icon> Exporter Excel
+          </button>
+        </div>
+
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="fiche()!.lignes">
+            <ng-container matColumnDef="ingredient">
+              <th mat-header-cell *matHeaderCellDef>Ingrédient</th>
+              <td mat-cell *matCellDef="let row">{{ row.ingredient?.nom }}</td>
+            </ng-container>
+            <ng-container matColumnDef="quantite">
+              <th mat-header-cell *matHeaderCellDef>Quantité</th>
+              <td mat-cell *matCellDef="let row">{{ row.quantite }} {{ row.ingredient?.unite?.symbole }}</td>
+            </ng-container>
+            <ng-container matColumnDef="prixUnitaire">
+              <th mat-header-cell *matHeaderCellDef>Prix stock</th>
+              <td mat-cell *matCellDef="let row">{{ row.prixUnitaire | currencyTnd }}</td>
+            </ng-container>
+            <ng-container matColumnDef="prixOverride">
+              <th mat-header-cell *matHeaderCellDef>Prix manuel</th>
+              <td mat-cell *matCellDef="let row">
+                @if (modeManuel()) {
+                  <div class="override-input">
+                    <input type="number" step="0.001" min="0" [value]="overrideValues()[row.ingredientId] ?? row.prixOverride ?? ''"
+                      (input)="setOverride(row.ingredientId, $any($event.target).value)" />
+                    <button mat-icon-button matTooltip="Enregistrer" (click)="saveOverride(row)"><mat-icon>save</mat-icon></button>
+                  </div>
+                } @else {
+                  {{ row.prixOverride | currencyTnd }}
+                }
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="prixEffectif">
+              <th mat-header-cell *matHeaderCellDef>Prix effectif</th>
+              <td mat-cell *matCellDef="let row">{{ getPrixEffectif(row) | currencyTnd }}</td>
+            </ng-container>
+            <ng-container matColumnDef="cout">
+              <th mat-header-cell *matHeaderCellDef>Coût ligne</th>
+              <td mat-cell *matCellDef="let row"><strong>{{ getCoutLigne(row) | currencyTnd }}</strong></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="ficheColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: ficheColumns;"></tr>
+          </table>
+        </div>
+
+        <div class="total-row">
+          <strong>Coût total : {{ getTotalCout() | currencyTnd }}</strong>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

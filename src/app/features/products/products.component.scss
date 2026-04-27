@@ -1,0 +1,9 @@
+.activite-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; button.active { background: #1565C0; color: white; } }
+.actions-bar { display: flex; gap: 12px; margin-bottom: 16px; }
+.no-data { padding: 24px; text-align: center; color: #999; }
+.type-chip { padding: 2px 8px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; background: #e3f2fd; color: #1565C0; }
+.type-chip.sellable { background: #e8f5e9; color: #2e7d32; }
+.recette-card { margin-top: 16px; }
+.recette-add-form { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 16px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-card { width: 480px; max-width: 95vw; }
