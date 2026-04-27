@@ -6,7 +6,7 @@
       <mat-label>Activité</mat-label>
       <mat-select [value]="selectedActiviteId()" (selectionChange)="selectedActiviteId.set($event.value); loadProducts()">
         @for (a of activites(); track a.id) {
-          <mat-option [value]="a.id">{{ a.nom }}</mat-option>
+          <mat-option [value]="a.id">{{ a.name }}</mat-option>
         }
       </mat-select>
     </mat-form-field>

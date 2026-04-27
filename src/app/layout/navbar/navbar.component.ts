@@ -26,7 +26,7 @@ import { AppStateService } from '../../core/services/app-state.service';
           <mat-form-field appearance="outline" class="activite-field">
             <mat-select [value]="state.currentActiviteId()" (selectionChange)="state.setActivite($event.value)">
               @for (a of state.activites(); track a.id) {
-                <mat-option [value]="a.id">{{ a.nom }}</mat-option>
+                <mat-option [value]="a.id">{{ a.name }}</mat-option>
               }
             </mat-select>
           </mat-form-field>

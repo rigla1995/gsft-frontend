@@ -5,7 +5,7 @@
   <div class="activite-selector">
     @for (a of activites(); track a.id) {
       <button mat-stroked-button [class.active]="selectedActiviteId() === a.id" (click)="selectedActiviteId.set(a.id); loadProducts()">
-        {{ a.nom }}
+        {{ a.name }}
       </button>
     }
   </div>

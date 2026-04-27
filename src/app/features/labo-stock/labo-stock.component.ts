@@ -24,7 +24,7 @@ import { StockItem } from '../../core/models/stock.model';
       @if (labo()) {
         <div class="labo-info">
           <mat-icon>science</mat-icon>
-          <span>{{ labo()!.nom }}</span>
+          <span>{{ labo()!.name }}</span>
         </div>
 
         <div class="table-wrapper">

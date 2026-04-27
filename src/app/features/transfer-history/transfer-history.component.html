@@ -24,7 +24,7 @@
           <mat-select [value]="filterActiviteId()" (selectionChange)="filterActiviteId.set($event.value); applyFilters()">
             <mat-option value="">Toutes</mat-option>
             @for (a of activites(); track a.id) {
-              <mat-option [value]="a.id">{{ a.nom }}</mat-option>
+              <mat-option [value]="a.id">{{ a.name }}</mat-option>
             }
           </mat-select>
         </mat-form-field>

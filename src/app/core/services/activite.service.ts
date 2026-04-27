@@ -2,14 +2,22 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export type ActivityType = 'Restaurant' | 'Cafe' | 'Labo';
+
 export interface Activite {
   id: string;
-  nom: string;
-  type: 'FRANCHISE' | 'DISTINCTE' | 'LABO';
+  name: string;
+  type: ActivityType;
   tenantId: string;
-  laboId?: string;
-  labo?: Activite;
-  isActive: boolean;
+  parentActivityId?: string;
+  parentActivityName?: string;
+  createdAt?: string;
+}
+
+export interface CreateActiviteRequest {
+  name: string;
+  type: ActivityType;
+  parentActivityId?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -24,11 +32,11 @@ export class ActiviteService {
     return this.http.get<Activite>(`/api/activities/${id}`);
   }
 
-  createActivite(body: Partial<Activite>): Observable<Activite> {
+  createActivite(body: CreateActiviteRequest): Observable<Activite> {
     return this.http.post<Activite>('/api/activities', body);
   }
 
-  updateActivite(id: string, body: Partial<Activite>): Observable<Activite> {
+  updateActivite(id: string, body: CreateActiviteRequest): Observable<Activite> {
     return this.http.put<Activite>(`/api/activities/${id}`, body);
   }
 

@@ -21,8 +21,8 @@
         <form [formGroup]="form" (ngSubmit)="submit()" class="form-row">
           <mat-form-field appearance="outline">
             <mat-label>Nom</mat-label>
-            <input matInput formControlName="nom" placeholder="Ex. Restaurant Centre">
-            @if (form.controls.nom.hasError('required')) {
+            <input matInput formControlName="name" placeholder="Ex. Restaurant Centre">
+            @if (form.controls.name.hasError('required')) {
               <mat-error>Le nom est requis</mat-error>
             }
           </mat-form-field>
@@ -49,26 +49,26 @@
 
   <mat-divider class="section-divider"></mat-divider>
 
-  <!-- Franchise -->
-  @if (franchise.length > 0) {
+  <!-- Restaurants -->
+  @if (restaurants.length > 0) {
     <mat-card class="group-card">
       <mat-card-header>
-        <mat-card-title><mat-icon class="title-icon primary-icon">store</mat-icon> Franchises ({{ franchise.length }})</mat-card-title>
+        <mat-card-title><mat-icon class="title-icon primary-icon">store</mat-icon> Restaurants ({{ restaurants.length }})</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <ng-container *ngTemplateOutlet="tableRef; context: { $implicit: franchise }"></ng-container>
+        <ng-container *ngTemplateOutlet="tableRef; context: { $implicit: restaurants }"></ng-container>
       </mat-card-content>
     </mat-card>
   }
 
-  <!-- Distinctes -->
-  @if (distinctes.length > 0) {
+  <!-- Cafés -->
+  @if (cafes.length > 0) {
     <mat-card class="group-card">
       <mat-card-header>
-        <mat-card-title><mat-icon class="title-icon">restaurant</mat-icon> Activités Distinctes ({{ distinctes.length }})</mat-card-title>
+        <mat-card-title><mat-icon class="title-icon">local_cafe</mat-icon> Cafés ({{ cafes.length }})</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <ng-container *ngTemplateOutlet="tableRef; context: { $implicit: distinctes }"></ng-container>
+        <ng-container *ngTemplateOutlet="tableRef; context: { $implicit: cafes }"></ng-container>
       </mat-card-content>
     </mat-card>
   }
@@ -98,23 +98,14 @@
 <ng-template #tableRef let-rows>
   <div class="table-wrapper">
     <table mat-table [dataSource]="rows">
-      <ng-container matColumnDef="nom">
+      <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Nom</th>
-        <td mat-cell *matCellDef="let a">{{ a.nom }}</td>
+        <td mat-cell *matCellDef="let a">{{ a.name }}</td>
       </ng-container>
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef>Type</th>
         <td mat-cell *matCellDef="let a">
           <span class="type-badge" [class]="'type-' + a.type.toLowerCase()">{{ typeLabel(a.type) }}</span>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="statut">
-        <th mat-header-cell *matHeaderCellDef>Statut</th>
-        <td mat-cell *matCellDef="let a">
-          <mat-icon [class]="a.isActive ? 'active-icon' : 'inactive-icon'"
-                    [matTooltip]="a.isActive ? 'Active' : 'Inactive'">
-            {{ a.isActive ? 'check_circle' : 'cancel' }}
-          </mat-icon>
         </td>
       </ng-container>
       <ng-container matColumnDef="actions">

@@ -13,7 +13,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ActiviteService, Activite } from '../../core/services/activite.service';
+import { ActiviteService, Activite, ActivityType } from '../../core/services/activite.service';
 
 @Component({
   selector: 'app-activites',
@@ -38,21 +38,21 @@ export class ActivitesComponent implements OnInit {
   editingId = signal<string | null>(null);
 
   form = this.fb.nonNullable.group({
-    nom: ['', [Validators.required, Validators.minLength(2)]],
-    type: ['DISTINCTE' as 'FRANCHISE' | 'DISTINCTE' | 'LABO', Validators.required],
+    name: ['', [Validators.required, Validators.minLength(2)]],
+    type: ['Restaurant' as ActivityType, Validators.required],
   });
 
-  columns = ['nom', 'type', 'statut', 'actions'];
+  columns = ['name', 'type', 'actions'];
 
-  types: { value: 'FRANCHISE' | 'DISTINCTE' | 'LABO'; label: string }[] = [
-    { value: 'FRANCHISE', label: 'Franchise' },
-    { value: 'DISTINCTE', label: 'Distincte' },
-    { value: 'LABO', label: 'Laboratoire' },
+  types: { value: ActivityType; label: string }[] = [
+    { value: 'Restaurant', label: 'Restaurant' },
+    { value: 'Cafe', label: 'Café' },
+    { value: 'Labo', label: 'Laboratoire' },
   ];
 
-  get franchise() { return this.activites().filter(a => a.type === 'FRANCHISE'); }
-  get distinctes() { return this.activites().filter(a => a.type === 'DISTINCTE'); }
-  get labos() { return this.activites().filter(a => a.type === 'LABO'); }
+  get restaurants() { return this.activites().filter(a => a.type === 'Restaurant'); }
+  get cafes() { return this.activites().filter(a => a.type === 'Cafe'); }
+  get labos() { return this.activites().filter(a => a.type === 'Labo'); }
 
   ngOnInit(): void {
     this.load();
@@ -68,13 +68,13 @@ export class ActivitesComponent implements OnInit {
 
   openCreate(): void {
     this.editingId.set(null);
-    this.form.reset({ nom: '', type: 'DISTINCTE' });
+    this.form.reset({ name: '', type: 'Restaurant' });
     this.showForm.set(true);
   }
 
   openEdit(a: Activite): void {
     this.editingId.set(a.id);
-    this.form.reset({ nom: a.nom, type: a.type });
+    this.form.reset({ name: a.name, type: a.type });
     this.showForm.set(true);
   }
 
@@ -85,11 +85,11 @@ export class ActivitesComponent implements OnInit {
 
   submit(): void {
     if (this.form.invalid) return;
-    const { nom, type } = this.form.getRawValue();
+    const { name, type } = this.form.getRawValue();
     const id = this.editingId();
     const op = id
-      ? this.svc.updateActivite(id, { nom, type })
-      : this.svc.createActivite({ nom, type });
+      ? this.svc.updateActivite(id, { name, type })
+      : this.svc.createActivite({ name, type });
 
     op.subscribe({
       next: () => {
@@ -102,7 +102,7 @@ export class ActivitesComponent implements OnInit {
   }
 
   delete(a: Activite): void {
-    if (!confirm(`Supprimer l'activité « ${a.nom} » ?`)) return;
+    if (!confirm(`Supprimer l'activité « ${a.name} » ?`)) return;
     this.svc.deleteActivite(a.id).subscribe({
       next: () => {
         this.snackBar.open('Activité supprimée', 'OK', { duration: 3000 });
@@ -117,6 +117,6 @@ export class ActivitesComponent implements OnInit {
   }
 
   typeColor(type: string): 'primary' | 'accent' | '' {
-    return type === 'FRANCHISE' ? 'primary' : type === 'LABO' ? 'accent' : '';
+    return type === 'Restaurant' ? 'primary' : type === 'Labo' ? 'accent' : '';
   }
 }

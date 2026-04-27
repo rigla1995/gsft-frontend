@@ -10,7 +10,7 @@
   <div class="activite-selector">
     @for (a of activites(); track a.id) {
       <button mat-stroked-button [class.active]="selectedActiviteId() === a.id" (click)="selectActivite(a.id)">
-        {{ a.nom }}
+        {{ a.name }}
       </button>
     }
   </div>
@@ -183,7 +183,7 @@
               <mat-select formControlName="activiteDestId">
                 @for (a of activites(); track a.id) {
                   @if (a.id !== selectedActiviteId()) {
-                    <mat-option [value]="a.id">{{ a.nom }}</mat-option>
+                    <mat-option [value]="a.id">{{ a.name }}</mat-option>
                   }
                 }
               </mat-select>
