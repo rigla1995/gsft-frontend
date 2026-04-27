@@ -1,0 +1,20 @@
+.activite-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  button.active { background: #1565C0; color: white; }
+}
+.actions-bar { display: flex; gap: 12px; margin-bottom: 16px; }
+.tab-content { padding: 16px 0; }
+.no-data { padding: 24px; text-align: center; color: #999; }
+.row-alerte td { background: #fff8f8; }
+.alerte-badge { font-size: 0.9rem; background: #c62828; color: white; border-radius: 12px; padding: 2px 12px; margin-left: 12px; vertical-align: middle; }
+.type-chip { padding: 2px 8px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; }
+.type-achat  { background: #e8f5e9; color: #2e7d32; }
+.type-conso  { background: #fff8e1; color: #e65100; }
+.type-ajust  { background: #e3f2fd; color: #1565C0; }
+.type-in     { background: #f3e5f5; color: #6a1b9a; }
+.type-out    { background: #fce4ec; color: #880e4f; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-card { width: 520px; max-width: 95vw; }
