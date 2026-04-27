@@ -1,6 +1,6 @@
 import {
   ApplicationConfig,
-  provideExperimentalZonelessChangeDetection,
+  provideZonelessChangeDetection,
   LOCALE_ID,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -18,7 +18,7 @@ registerLocaleData(localeFr);
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([jwtInterceptor, errorInterceptor])),
     provideAnimationsAsync(),
