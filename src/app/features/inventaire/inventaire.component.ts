@@ -77,7 +77,7 @@ export class InventaireComponent implements OnInit {
   }
 
   ouvrirSession(session: InventaireSession): void {
-    this.stockSvc.getInventaireSession(session.id).subscribe(s => this.activeSession.set(s));
+    this.stockSvc.getInventaireSession(this.selectedActiviteId(), session.id).subscribe(s => this.activeSession.set(s));
   }
 
   updateLigne(ligne: InventaireLigne, event: Event): void {

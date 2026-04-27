@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   IngredientAssignation,
   InventaireSession,
@@ -28,9 +29,11 @@ export class StockService {
     return this.http.get<string[]>(`/api/activities/${activiteId}/ingredients`);
   }
   assignIngredients(req: IngredientAssignation): Observable<void> {
-    return this.http.put<void>(`/api/activities/${req.activiteId}/ingredients`, {
-      ingredientIds: req.ingredientIds,
-    });
+    const requests = req.ingredientIds.map(id =>
+      this.http.post<void>(`/api/activities/${req.activiteId}/ingredients`, { ingredientId: id })
+    );
+    if (!requests.length) return of(void 0);
+    return forkJoin(requests).pipe(map(() => void 0));
   }
 
   // Mouvements
@@ -73,11 +76,11 @@ export class StockService {
 
   // Inventaire
   createInventaireSession(activiteId: string): Observable<InventaireSession> {
-    return this.http.post<InventaireSession>(`/api/activities/${activiteId}/inventory`, {});
+    return this.http.post<InventaireSession>(`/api/activities/${activiteId}/inventory-sessions`, {});
   }
 
-  getInventaireSession(sessionId: string): Observable<InventaireSession> {
-    return this.http.get<InventaireSession>(`/api/inventory/${sessionId}`);
+  getInventaireSession(activityId: string, sessionId: string): Observable<InventaireSession> {
+    return this.http.get<InventaireSession>(`/api/activities/${activityId}/inventory-sessions/${sessionId}`);
   }
 
   updateInventaireLigne(
@@ -95,6 +98,6 @@ export class StockService {
   }
 
   getInventaires(activiteId: string): Observable<InventaireSession[]> {
-    return this.http.get<InventaireSession[]>(`/api/activities/${activiteId}/inventory`);
+    return this.http.get<InventaireSession[]>(`/api/activities/${activiteId}/inventory-sessions`);
   }
 }

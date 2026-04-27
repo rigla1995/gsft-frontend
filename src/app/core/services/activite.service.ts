@@ -29,7 +29,7 @@ export class ActiviteService {
   }
 
   updateActivite(id: string, body: Partial<Activite>): Observable<Activite> {
-    return this.http.patch<Activite>(`/api/activities/${id}`, body);
+    return this.http.put<Activite>(`/api/activities/${id}`, body);
   }
 
   deleteActivite(id: string): Observable<void> {
@@ -37,6 +37,6 @@ export class ActiviteService {
   }
 
   dupliquerStock(sourceId: string, destId: string): Observable<void> {
-    return this.http.post<void>(`/api/activities/${sourceId}/dupliquer-stock`, { destId });
+    return this.http.post<void>(`/api/activities/${sourceId}/stock/duplicate-to/${destId}`, {});
   }
 }
