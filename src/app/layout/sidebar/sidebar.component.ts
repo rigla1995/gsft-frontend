@@ -90,6 +90,7 @@ export class SidebarComponent {
     { label: 'Stock Labo', icon: 'science', route: '/app/labo-stock' },
     { label: 'Transferts', icon: 'swap_horiz', route: '/app/transfers' },
     { label: 'Historique', icon: 'history', route: '/app/transfer-history' },
+    { label: 'Inventaire', icon: 'fact_check', route: '/app/inventaire' },
     { label: 'Produits', icon: 'fastfood', route: '/app/products', section: 'Produits' },
     { label: 'Fiches Techniques', icon: 'description', route: '/app/technical-sheets' },
   ];

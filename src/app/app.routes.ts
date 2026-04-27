@@ -20,6 +20,7 @@ export const routes: Routes = [
       { path: 'mes-ingredients', loadComponent: () => import('./features/mes-ingredients/mes-ingredients.component').then((m) => m.MesIngredientsComponent) },
       { path: 'stock', loadComponent: () => import('./features/stock/stock.component').then((m) => m.StockComponent) },
       { path: 'labo-stock', loadComponent: () => import('./features/labo-stock/labo-stock.component').then((m) => m.LaboStockComponent) },
+      { path: 'inventaire', loadComponent: () => import('./features/inventaire/inventaire.component').then((m) => m.InventaireComponent) },
       { path: 'transfers', loadComponent: () => import('./features/transfers/transfers.component').then((m) => m.TransfersComponent) },
       { path: 'transfer-history', loadComponent: () => import('./features/transfer-history/transfer-history.component').then((m) => m.TransferHistoryComponent) },
       { path: 'products', loadComponent: () => import('./features/products/products.component').then((m) => m.ProductsComponent) },
