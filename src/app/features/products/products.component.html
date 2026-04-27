@@ -75,7 +75,7 @@
             <mat-form-field appearance="outline">
               <mat-label>Ingrédient</mat-label>
               <mat-select formControlName="ingredientId">
-                @for (i of ingredients(); track i.id) { <mat-option [value]="i.id">{{ i.nom }}</mat-option> }
+                @for (i of ingredients(); track i.id) { <mat-option [value]="i.id">{{ i.name }}</mat-option> }
               </mat-select>
             </mat-form-field>
           } @else {

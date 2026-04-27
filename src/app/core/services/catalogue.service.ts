@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Categorie, Domaine, Ingredient, IngredientFilter, PaginatedResponse, Unite } from '../models/catalogue.model';
 
 @Injectable({ providedIn: 'root' })
@@ -9,30 +10,30 @@ export class CatalogueService {
 
   // Unités
   getUnites(): Observable<Unite[]> {
-    return this.http.get<Unite[]>('/api/unites');
+    return this.http.get<Unite[]>('/api/units');
   }
   createUnite(body: Partial<Unite>): Observable<Unite> {
-    return this.http.post<Unite>('/api/unites', body);
+    return this.http.post<Unite>('/api/units', body);
   }
   updateUnite(id: string, body: Partial<Unite>): Observable<Unite> {
-    return this.http.patch<Unite>(`/api/unites/${id}`, body);
+    return this.http.put<Unite>(`/api/units/${id}`, body);
   }
   deleteUnite(id: string): Observable<void> {
-    return this.http.delete<void>(`/api/unites/${id}`);
+    return this.http.delete<void>(`/api/units/${id}`);
   }
 
   // Domaines
   getDomaines(): Observable<Domaine[]> {
-    return this.http.get<Domaine[]>('/api/domaines');
+    return this.http.get<Domaine[]>('/api/domains');
   }
   createDomaine(body: Partial<Domaine>): Observable<Domaine> {
-    return this.http.post<Domaine>('/api/domaines', body);
+    return this.http.post<Domaine>('/api/domains', body);
   }
   updateDomaine(id: string, body: Partial<Domaine>): Observable<Domaine> {
-    return this.http.patch<Domaine>(`/api/domaines/${id}`, body);
+    return this.http.put<Domaine>(`/api/domains/${id}`, body);
   }
   deleteDomaine(id: string): Observable<void> {
-    return this.http.delete<void>(`/api/domaines/${id}`);
+    return this.http.delete<void>(`/api/domains/${id}`);
   }
 
   // Catégories
@@ -45,7 +46,7 @@ export class CatalogueService {
     return this.http.post<Categorie>('/api/categories', body);
   }
   updateCategorie(id: string, body: Partial<Categorie>): Observable<Categorie> {
-    return this.http.patch<Categorie>(`/api/categories/${id}`, body);
+    return this.http.put<Categorie>(`/api/categories/${id}`, body);
   }
   deleteCategorie(id: string): Observable<void> {
     return this.http.delete<void>(`/api/categories/${id}`);
@@ -68,13 +69,13 @@ export class CatalogueService {
     return this.http.post<Ingredient>('/api/ingredients', body);
   }
   updateIngredient(id: string, body: Partial<Ingredient>): Observable<Ingredient> {
-    return this.http.patch<Ingredient>(`/api/ingredients/${id}`, body);
+    return this.http.put<Ingredient>(`/api/ingredients/${id}`, body);
   }
   deleteIngredient(id: string): Observable<void> {
     return this.http.delete<void>(`/api/ingredients/${id}`);
   }
 
   getAllIngredients(): Observable<Ingredient[]> {
-    return this.http.get<Ingredient[]>('/api/ingredients/all');
+    return this.getIngredients({ pageSize: 10000 }).pipe(map(r => r.data));
   }
 }

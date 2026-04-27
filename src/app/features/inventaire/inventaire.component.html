@@ -72,7 +72,7 @@
       <table mat-table [dataSource]="activeSession()!.lignes ?? []">
         <ng-container matColumnDef="ingredient">
           <th mat-header-cell *matHeaderCellDef>Ingrédient</th>
-          <td mat-cell *matCellDef="let row">{{ row.ingredient?.nom ?? row.ingredientId }}</td>
+          <td mat-cell *matCellDef="let row">{{ row.ingredient?.name ?? row.ingredientId }}</td>
         </ng-container>
         <ng-container matColumnDef="theoriqueQty">
           <th mat-header-cell *matHeaderCellDef>Stock théorique</th>

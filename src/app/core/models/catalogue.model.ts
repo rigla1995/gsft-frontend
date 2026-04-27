@@ -1,13 +1,13 @@
 export interface Unite {
   id: string;
-  nom: string;
-  symbole: string;
+  name: string;
+  symbol: string;
   createdAt?: string;
 }
 
 export interface Categorie {
   id: string;
-  nom: string;
+  name: string;
   domaine?: string;
   domaineId?: string;
   createdAt?: string;
@@ -15,16 +15,16 @@ export interface Categorie {
 
 export interface Domaine {
   id: string;
-  nom: string;
+  name: string;
   createdAt?: string;
 }
 
 export interface Ingredient {
   id: string;
-  nom: string;
+  name: string;
   categorieId: string;
   categorie?: Categorie;
-  uniteId: string;
+  unitId: string;
   unite?: Unite;
   domaineId?: string;
   domaine?: Domaine;

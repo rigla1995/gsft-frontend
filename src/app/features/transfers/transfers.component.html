@@ -34,7 +34,7 @@
               <mat-select [value]="categoryFilter()" (selectionChange)="categoryFilter.set($event.value)">
                 <mat-option value="">Toutes</mat-option>
                 @for (cat of categories(); track cat.id) {
-                  <mat-option [value]="cat.id">{{ cat.nom }}</mat-option>
+                  <mat-option [value]="cat.id">{{ cat.name }}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -61,11 +61,11 @@
                    [class.selected]="selectedStockItem()?.id === item.id"
                    (click)="selectIngredient(item)">
                 <div class="ing-info">
-                  <span class="ing-name">{{ item.ingredient?.nom }}</span>
-                  <span class="ing-cat">{{ item.ingredient?.categorie?.nom }}</span>
+                  <span class="ing-name">{{ item.ingredient?.name }}</span>
+                  <span class="ing-cat">{{ item.ingredient?.categorie?.name }}</span>
                 </div>
                 <span class="qty-badge" [class]="stockColor(item)">
-                  {{ item.quantite }} {{ item.ingredient?.unite?.symbole }}
+                  {{ item.quantite }} {{ item.ingredient?.unite?.symbol }}
                 </span>
               </div>
             }
@@ -87,7 +87,7 @@
           @if (selectedStockItem()) {
             <div class="selected-info">
               <mat-icon>inventory_2</mat-icon>
-              <span><strong>{{ selectedStockItem()!.ingredient?.nom }}</strong> — disponible : <span [class]="stockColor(selectedStockItem()!)">{{ selectedStockItem()!.quantite }} {{ selectedStockItem()!.ingredient?.unite?.symbole }}</span></span>
+              <span><strong>{{ selectedStockItem()!.ingredient?.name }}</strong> — disponible : <span [class]="stockColor(selectedStockItem()!)">{{ selectedStockItem()!.quantite }} {{ selectedStockItem()!.ingredient?.unite?.symbol }}</span></span>
             </div>
           }
 
@@ -97,7 +97,7 @@
               <mat-select formControlName="ingredientId">
                 @for (item of laboStock(); track item.id) {
                   <mat-option [value]="item.ingredientId">
-                    {{ item.ingredient?.nom }} ({{ item.quantite }} {{ item.ingredient?.unite?.symbole }})
+                    {{ item.ingredient?.name }} ({{ item.quantite }} {{ item.ingredient?.unite?.symbol }})
                   </mat-option>
                 }
               </mat-select>
@@ -121,7 +121,7 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Quantité</mat-label>
               <input matInput type="number" formControlName="quantite" min="0.001" step="0.001">
-              <span matSuffix>{{ selectedStockItem()?.ingredient?.unite?.symbole }}</span>
+              <span matSuffix>{{ selectedStockItem()?.ingredient?.unite?.symbol }}</span>
               @if (form.controls.quantite.hasError('required')) {
                 <mat-error>Quantité requise</mat-error>
               }

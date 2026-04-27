@@ -77,9 +77,9 @@ export interface Transfert {
   ingredientId: string;
   ingredient?: import('./catalogue.model').Ingredient;
   activiteSourceId: string;
-  activiteSource?: { id: string; nom: string };
+  activiteSource?: { id: string; name: string };
   activiteDestId: string;
-  activiteDest?: { id: string; nom: string };
+  activiteDest?: { id: string; name: string };
   quantite: number;
   note?: string;
   createdAt: string;

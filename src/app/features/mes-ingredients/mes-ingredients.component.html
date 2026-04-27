@@ -23,9 +23,9 @@
       <mat-card class="ingredient-card" [class.assigned]="isAssigned(ing.id)" (click)="toggle(ing.id)">
         <mat-card-content>
           <mat-checkbox [checked]="isAssigned(ing.id)" (click)="$event.stopPropagation()" (change)="toggle(ing.id)">
-            {{ ing.nom }}
+            {{ ing.name }}
           </mat-checkbox>
-          <div class="ing-meta">{{ ing.categorie?.nom }} · {{ ing.unite?.symbole }}</div>
+          <div class="ing-meta">{{ ing.categorie?.name }} · {{ ing.unite?.symbol }}</div>
         </mat-card-content>
       </mat-card>
     }

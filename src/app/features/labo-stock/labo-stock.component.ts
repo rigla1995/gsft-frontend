@@ -31,23 +31,23 @@ import { StockItem } from '../../core/models/stock.model';
           <table mat-table [dataSource]="stock()">
             <ng-container matColumnDef="ingredient">
               <th mat-header-cell *matHeaderCellDef>Ingrédient</th>
-              <td mat-cell *matCellDef="let row">{{ row.ingredient?.nom ?? '—' }}</td>
+              <td mat-cell *matCellDef="let row">{{ row.ingredient?.name ?? '—' }}</td>
             </ng-container>
             <ng-container matColumnDef="categorie">
               <th mat-header-cell *matHeaderCellDef>Catégorie</th>
-              <td mat-cell *matCellDef="let row">{{ row.ingredient?.categorie?.nom ?? '—' }}</td>
+              <td mat-cell *matCellDef="let row">{{ row.ingredient?.categorie?.name ?? '—' }}</td>
             </ng-container>
             <ng-container matColumnDef="quantite">
               <th mat-header-cell *matHeaderCellDef>Quantité</th>
               <td mat-cell *matCellDef="let row">
                 <span [class]="row.isAlerte ? 'qty-red' : 'qty-green'">
-                  {{ row.quantite }} {{ row.ingredient?.unite?.symbole }}
+                  {{ row.quantite }} {{ row.ingredient?.unite?.symbol }}
                 </span>
               </td>
             </ng-container>
             <ng-container matColumnDef="seuil">
               <th mat-header-cell *matHeaderCellDef>Seuil min.</th>
-              <td mat-cell *matCellDef="let row">{{ row.seuilMinimum }} {{ row.ingredient?.unite?.symbole }}</td>
+              <td mat-cell *matCellDef="let row">{{ row.seuilMinimum }} {{ row.ingredient?.unite?.symbol }}</td>
             </ng-container>
             <ng-container matColumnDef="alerte">
               <th mat-header-cell *matHeaderCellDef>Alerte</th>

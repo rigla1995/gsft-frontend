@@ -52,7 +52,7 @@ export class TransferHistoryComponent implements OnInit {
   unitTotals = computed(() => {
     const map = new Map<string, { unite: string; total: number }>();
     for (const t of this.transferts()) {
-      const unite = t.ingredient?.unite?.symbole ?? '?';
+      const unite = t.ingredient?.unite?.symbol ?? '?';
       const key = unite;
       const existing = map.get(key);
       if (existing) {
@@ -112,6 +112,6 @@ export class TransferHistoryComponent implements OnInit {
   filteredRows = computed(() => {
     const ing = this.filterIngredient().toLowerCase();
     if (!ing) return this.transferts();
-    return this.transferts().filter(t => t.ingredient?.nom.toLowerCase().includes(ing));
+    return this.transferts().filter(t => t.ingredient?.name.toLowerCase().includes(ing));
   });
 }

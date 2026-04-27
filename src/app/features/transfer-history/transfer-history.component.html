@@ -65,8 +65,8 @@
               <th mat-header-cell *matHeaderCellDef>Ingrédient</th>
               <td mat-cell *matCellDef="let t">
                 <div class="ing-cell">
-                  <span class="ing-name">{{ t.ingredient?.nom ?? '—' }}</span>
-                  <span class="ing-cat">{{ t.ingredient?.categorie?.nom }}</span>
+                  <span class="ing-name">{{ t.ingredient?.name ?? '—' }}</span>
+                  <span class="ing-cat">{{ t.ingredient?.categorie?.name }}</span>
                 </div>
               </td>
             </ng-container>
@@ -74,21 +74,21 @@
             <ng-container matColumnDef="source">
               <th mat-header-cell *matHeaderCellDef>Source</th>
               <td mat-cell *matCellDef="let t">
-                <span class="badge badge-labo">{{ t.activiteSource?.nom ?? 'Labo' }}</span>
+                <span class="badge badge-labo">{{ t.activiteSource?.name ?? 'Labo' }}</span>
               </td>
             </ng-container>
 
             <ng-container matColumnDef="dest">
               <th mat-header-cell *matHeaderCellDef>Destination</th>
               <td mat-cell *matCellDef="let t">
-                <span class="badge badge-dest">{{ t.activiteDest?.nom ?? '—' }}</span>
+                <span class="badge badge-dest">{{ t.activiteDest?.name ?? '—' }}</span>
               </td>
             </ng-container>
 
             <ng-container matColumnDef="quantite">
               <th mat-header-cell *matHeaderCellDef>Quantité</th>
               <td mat-cell *matCellDef="let t" class="qty-cell">
-                {{ t.quantite }} {{ t.ingredient?.unite?.symbole }}
+                {{ t.quantite }} {{ t.ingredient?.unite?.symbol }}
               </td>
             </ng-container>
 

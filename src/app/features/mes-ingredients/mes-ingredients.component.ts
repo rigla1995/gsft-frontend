@@ -66,7 +66,7 @@ export class MesIngredientsComponent implements OnInit {
   applyFilter(): void {
     const s = this.searchText().toLowerCase();
     this.filteredIngredients.set(
-      this.allIngredients().filter(i => !s || i.nom.toLowerCase().includes(s))
+      this.allIngredients().filter(i => !s || i.name.toLowerCase().includes(s))
     );
   }
 

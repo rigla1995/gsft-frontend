@@ -17,26 +17,26 @@ export class ActiviteService {
   private http = inject(HttpClient);
 
   getActivites(): Observable<Activite[]> {
-    return this.http.get<Activite[]>('/api/activites');
+    return this.http.get<Activite[]>('/api/activities');
   }
 
   getActivite(id: string): Observable<Activite> {
-    return this.http.get<Activite>(`/api/activites/${id}`);
+    return this.http.get<Activite>(`/api/activities/${id}`);
   }
 
   createActivite(body: Partial<Activite>): Observable<Activite> {
-    return this.http.post<Activite>('/api/activites', body);
+    return this.http.post<Activite>('/api/activities', body);
   }
 
   updateActivite(id: string, body: Partial<Activite>): Observable<Activite> {
-    return this.http.patch<Activite>(`/api/activites/${id}`, body);
+    return this.http.patch<Activite>(`/api/activities/${id}`, body);
   }
 
   deleteActivite(id: string): Observable<void> {
-    return this.http.delete<void>(`/api/activites/${id}`);
+    return this.http.delete<void>(`/api/activities/${id}`);
   }
 
   dupliquerStock(sourceId: string, destId: string): Observable<void> {
-    return this.http.post<void>(`/api/activites/${sourceId}/dupliquer-stock`, { destId });
+    return this.http.post<void>(`/api/activities/${sourceId}/dupliquer-stock`, { destId });
   }
 }

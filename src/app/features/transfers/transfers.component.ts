@@ -52,7 +52,7 @@ export class TransfersComponent implements OnInit {
     const cat = this.categoryFilter();
     const name = this.nameFilter().toLowerCase();
     if (cat) items = items.filter(i => i.ingredient?.categorieId === cat);
-    if (name) items = items.filter(i => i.ingredient?.nom.toLowerCase().includes(name));
+    if (name) items = items.filter(i => i.ingredient?.name.toLowerCase().includes(name));
     return items;
   });
 

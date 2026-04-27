@@ -134,7 +134,7 @@ export class ProductsComponent implements OnInit {
 
   getLigneName(l: Partial<RecetteLigne>): string {
     if (l.type === 'INGREDIENT') {
-      return this.ingredients().find(i => i.id === l.ingredientId)?.nom ?? '—';
+      return this.ingredients().find(i => i.id === l.ingredientId)?.name ?? '—';
     }
     return this.allProducts().find(p => p.id === l.sousProduitId)?.nom ?? '—';
   }

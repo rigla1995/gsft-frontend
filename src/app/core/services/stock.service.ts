@@ -20,15 +20,15 @@ export class StockService {
 
   // Stock items per activity
   getStock(activiteId: string): Observable<StockItem[]> {
-    return this.http.get<StockItem[]>(`/api/activites/${activiteId}/stock`);
+    return this.http.get<StockItem[]>(`/api/activities/${activiteId}/stock`);
   }
 
   // Ingredient assignment
   getAssignedIngredients(activiteId: string): Observable<string[]> {
-    return this.http.get<string[]>(`/api/activites/${activiteId}/ingredients`);
+    return this.http.get<string[]>(`/api/activities/${activiteId}/ingredients`);
   }
   assignIngredients(req: IngredientAssignation): Observable<void> {
-    return this.http.put<void>(`/api/activites/${req.activiteId}/ingredients`, {
+    return this.http.put<void>(`/api/activities/${req.activiteId}/ingredients`, {
       ingredientIds: req.ingredientIds,
     });
   }
@@ -46,17 +46,18 @@ export class StockService {
     if (filter?.page != null) params = params.set('page', String(filter.page));
     if (filter?.pageSize != null) params = params.set('pageSize', String(filter.pageSize));
     return this.http.get<PaginatedResponse<Mouvement>>(
-      `/api/activites/${activiteId}/mouvements`,
+      `/api/activities/${activiteId}/stock/movements`,
       { params },
     );
   }
 
   enregistrerMouvement(activiteId: string, req: MouvementRequest): Observable<Mouvement> {
-    return this.http.post<Mouvement>(`/api/activites/${activiteId}/mouvements`, req);
+    return this.http.post<Mouvement>(`/api/activities/${activiteId}/stock/movements`, req);
   }
 
+  // Transferts
   transferer(req: TransfertRequest): Observable<void> {
-    return this.http.post<void>('/api/transferts', req);
+    return this.http.post<void>('/api/transfers', req);
   }
 
   getTransferts(filter?: TransfertFilter): Observable<PaginatedResponse<Transfert>> {
@@ -67,16 +68,16 @@ export class StockService {
     if (filter?.dateFin) params = params.set('dateFin', filter.dateFin);
     if (filter?.page != null) params = params.set('page', String(filter.page));
     if (filter?.pageSize != null) params = params.set('pageSize', String(filter.pageSize));
-    return this.http.get<PaginatedResponse<Transfert>>('/api/transferts', { params });
+    return this.http.get<PaginatedResponse<Transfert>>('/api/transfers', { params });
   }
 
   // Inventaire
   createInventaireSession(activiteId: string): Observable<InventaireSession> {
-    return this.http.post<InventaireSession>(`/api/activites/${activiteId}/inventaires`, {});
+    return this.http.post<InventaireSession>(`/api/activities/${activiteId}/inventory`, {});
   }
 
   getInventaireSession(sessionId: string): Observable<InventaireSession> {
-    return this.http.get<InventaireSession>(`/api/inventaires/${sessionId}`);
+    return this.http.get<InventaireSession>(`/api/inventory/${sessionId}`);
   }
 
   updateInventaireLigne(
@@ -84,16 +85,16 @@ export class StockService {
     ligneId: string,
     quantiteReelle: number,
   ): Observable<void> {
-    return this.http.patch<void>(`/api/inventaires/${sessionId}/lignes/${ligneId}`, {
+    return this.http.patch<void>(`/api/inventory/${sessionId}/lignes/${ligneId}`, {
       quantiteReelle,
     });
   }
 
   validerInventaire(sessionId: string): Observable<void> {
-    return this.http.post<void>(`/api/inventaires/${sessionId}/valider`, {});
+    return this.http.post<void>(`/api/inventory/${sessionId}/valider`, {});
   }
 
   getInventaires(activiteId: string): Observable<InventaireSession[]> {
-    return this.http.get<InventaireSession[]>(`/api/activites/${activiteId}/inventaires`);
+    return this.http.get<InventaireSession[]>(`/api/activities/${activiteId}/inventory`);
   }
 }

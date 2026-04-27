@@ -50,15 +50,15 @@ export class CatalogueComponent implements OnInit {
   editingIngredient = signal<Ingredient | null>(null);
   showIngredientForm = signal(false);
 
-  ingColumns = ['nom', 'categorie', 'unite', 'prix', 'actions'];
+  ingColumns = ['name', 'categorie', 'unite', 'prix', 'actions'];
 
-  uniteForm = this.fb.group({ nom: ['', Validators.required], symbole: ['', Validators.required] });
-  domaineForm = this.fb.group({ nom: ['', Validators.required] });
-  categorieForm = this.fb.group({ nom: ['', Validators.required], domaineId: [''] });
+  uniteForm = this.fb.group({ name: ['', Validators.required], symbol: ['', Validators.required] });
+  domaineForm = this.fb.group({ name: ['', Validators.required] });
+  categorieForm = this.fb.group({ name: ['', Validators.required], domaineId: [''] });
   ingredientForm = this.fb.group({
-    nom: ['', Validators.required],
+    name: ['', Validators.required],
     categorieId: ['', Validators.required],
-    uniteId: ['', Validators.required],
+    unitId: ['', Validators.required],
     prixUnitaire: [null as number | null],
   });
 
@@ -94,7 +94,7 @@ export class CatalogueComponent implements OnInit {
 
   openIngredientForm(ing?: Ingredient): void {
     this.editingIngredient.set(ing ?? null);
-    this.ingredientForm.reset({ nom: ing?.nom ?? '', categorieId: ing?.categorieId ?? '', uniteId: ing?.uniteId ?? '', prixUnitaire: ing?.prixUnitaire ?? null });
+    this.ingredientForm.reset({ name: ing?.name ?? '', categorieId: ing?.categorieId ?? '', unitId: ing?.unitId ?? '', prixUnitaire: ing?.prixUnitaire ?? null });
     this.showIngredientForm.set(true);
   }
   closeIngredientForm(): void { this.showIngredientForm.set(false); this.editingIngredient.set(null); }
@@ -105,7 +105,7 @@ export class CatalogueComponent implements OnInit {
     obs.subscribe({ next: () => { this.snackBar.open('Enregistré', 'Fermer', { duration: 2000 }); this.closeIngredientForm(); this.loadIngredients(); } });
   }
   deleteIngredient(ing: Ingredient): void {
-    if (!confirm('Supprimer "' + ing.nom + '" ?')) return;
+    if (!confirm('Supprimer "' + ing.name + '" ?')) return;
     this.svc.deleteIngredient(ing.id).subscribe({ next: () => { this.snackBar.open('Supprimé', 'Fermer', { duration: 2000 }); this.loadIngredients(); } });
   }
 
@@ -118,7 +118,7 @@ export class CatalogueComponent implements OnInit {
     obs.subscribe({ next: () => { this.snackBar.open('Enregistré', 'Fermer', { duration: 2000 }); this.cancelEditUnite(); this.loadReferentiels(); } });
   }
   deleteUnite(u: Unite): void {
-    if (!confirm('Supprimer "' + u.nom + '" ?')) return;
+    if (!confirm('Supprimer "' + u.name + '" ?')) return;
     this.svc.deleteUnite(u.id).subscribe({ next: () => { this.snackBar.open('Supprimé', 'Fermer', { duration: 2000 }); this.loadReferentiels(); } });
   }
 
@@ -131,11 +131,11 @@ export class CatalogueComponent implements OnInit {
     obs.subscribe({ next: () => { this.snackBar.open('Enregistré', 'Fermer', { duration: 2000 }); this.cancelEditDomaine(); this.loadReferentiels(); } });
   }
   deleteDomaine(d: Domaine): void {
-    if (!confirm('Supprimer "' + d.nom + '" ?')) return;
+    if (!confirm('Supprimer "' + d.name + '" ?')) return;
     this.svc.deleteDomaine(d.id).subscribe({ next: () => { this.snackBar.open('Supprimé', 'Fermer', { duration: 2000 }); this.loadReferentiels(); } });
   }
 
-  editCategorie(c: Categorie): void { this.editingCategorie.set(c); this.categorieForm.patchValue({ nom: c.nom, domaineId: c.domaineId ?? '' }); }
+  editCategorie(c: Categorie): void { this.editingCategorie.set(c); this.categorieForm.patchValue({ name: c.name, domaineId: c.domaineId ?? '' }); }
   cancelEditCategorie(): void { this.editingCategorie.set(null); this.categorieForm.reset(); }
   saveCategorie(): void {
     if (this.categorieForm.invalid) return;
@@ -144,7 +144,7 @@ export class CatalogueComponent implements OnInit {
     obs.subscribe({ next: () => { this.snackBar.open('Enregistré', 'Fermer', { duration: 2000 }); this.cancelEditCategorie(); this.loadReferentiels(); } });
   }
   deleteCategorie(c: Categorie): void {
-    if (!confirm('Supprimer "' + c.nom + '" ?')) return;
+    if (!confirm('Supprimer "' + c.name + '" ?')) return;
     this.svc.deleteCategorie(c.id).subscribe({ next: () => { this.snackBar.open('Supprimé', 'Fermer', { duration: 2000 }); this.loadReferentiels(); } });
   }
 }
